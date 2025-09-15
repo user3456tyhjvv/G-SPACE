@@ -1,0 +1,836 @@
+<!--here are the instruction to use:
+1: change the paybill and details
+2: the support number
+3: the website URL
+4: host this using vercel i recommend it
+5: i have sent the file as zipped extract it then run the file in your terminal
+   then run the command * npm install and everything will work *
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>G space connect</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            color: white;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Header Styles */
+        header {
+            padding: 20px 15px;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        header h1 {
+            font-size: clamp(20px, 4vw, 28px);
+            font-weight: 700;
+            margin-bottom: 8px;
+            background: linear-gradient(45deg, #00ff88, #00ccff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        header h2 {
+            font-size: clamp(16px, 3vw, 20px);
+            font-weight: 500;
+            margin-bottom: 5px;
+            color: #ffffff;
+        }
+
+        header p {
+            font-size: clamp(12px, 2.5vw, 14px);
+            color: #b0b0b0;
+        }
+
+        /* Main Content */
+        main {
+            padding: 20px 15px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Verification Section - Moved to Top */
+        .verification-section {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            box-shadow: 0 5px 15px rgba(0, 255, 136, 0.1);
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #00ff88;
+        }
+
+        .verification-section p {
+            margin-bottom: 15px;
+            color: #b0b0b0;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .verify-form {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .verify-input {
+            flex: 1;
+            padding: 12px 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: white;
+            font-size: 16px;
+        }
+
+        .verify-input:focus {
+            outline: none;
+            border-color: #00ff88;
+            box-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
+        }
+
+        .verify-btn {
+            padding: 12px 20px;
+            background: linear-gradient(45deg, #00ff88, #00ccff);
+            border: none;
+            border-radius: 8px;
+            color: #000;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .verify-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 255, 136, 0.4);
+        }
+
+        .instructions {
+            font-size: 13px;
+            color: #888;
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+        }
+
+        /* Plan Options Grid */
+        .plan-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+            width: 100%;
+        }
+
+        /* Plan Cards */
+        .plan-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+            border: 2px solid;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            min-height: 140px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .plan-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+            z-index: -1;
+        }
+
+        /* Border Colors */
+        .border-blue {
+            border-color: #00ccff;
+            box-shadow: 0 0 20px rgba(0, 204, 255, 0.3);
+        }
+
+        .border-green {
+            border-color: #00ff88;
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+        }
+
+        .border-red {
+            border-color: #ff4757;
+            box-shadow: 0 0 20px rgba(255, 71, 87, 0.3);
+        }
+
+        .border-purple {
+            border-color: #a55eea;
+            box-shadow: 0 0 20px rgba(165, 94, 234, 0.3);
+        }
+
+        /* Plan Card Content */
+        .plan-title {
+            font-size: clamp(12px, 2vw, 14px);
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #ffffff;
+            line-height: 1.2;
+        }
+
+        .plan-price {
+            font-size: clamp(14px, 2.5vw, 16px);
+            font-weight: 700;
+            color: #ff4757;
+            margin-bottom: 6px;
+        }
+
+        .plan-speed {
+            font-size: clamp(10px, 2vw, 12px);
+            color: #b0b0b0;
+            margin-bottom: 10px;
+        }
+
+        /* Buy Button */
+        .buy-btn {
+            width: 100%;
+            padding: 8px 10px;
+            background: linear-gradient(45deg, #00ff88, #00ccff);
+            border: none;
+            border-radius: 6px;
+            color: #000;
+            font-weight: 600;
+            font-size: clamp(12px, 2vw, 14px);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: auto;
+        }
+
+        .buy-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 255, 136, 0.4);
+        }
+
+        .buy-btn:active {
+            transform: translateY(0);
+        }
+
+        /* Plan Card Hover Effects */
+        .plan-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .border-blue:hover {
+            box-shadow: 0 10px 30px rgba(0, 204, 255, 0.4);
+        }
+
+        .border-green:hover {
+            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.4);
+        }
+
+        .border-red:hover {
+            box-shadow: 0 10px 30px rgba(255, 71, 87, 0.4);
+        }
+
+        .border-purple:hover {
+            box-shadow: 0 10px 30px rgba(165, 94, 234, 0.4);
+        }
+
+        /* Footer */
+        footer {
+            padding: 30px 15px 20px;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.2);
+            margin-top: 40px;
+        }
+
+        footer p {
+            font-size: 14px;
+            color: #888;
+            margin-bottom: 10px;
+        }
+
+        .support-contact {
+            font-size: 14px;
+            color: #b0b0b0;
+        }
+
+        .support-contact a {
+            color: #00ff88;
+            text-decoration: none;
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border-radius: 15px;
+            padding: 25px;
+            width: 90%;
+            max-width: 350px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: #888;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .modal-title {
+            font-size: 20px;
+            margin-bottom: 20px;
+            color: #fff;
+            text-align: center;
+        }
+
+        /* Payment Tabs */
+        .payment-tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            overflow: hidden;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 10px;
+            background: transparent;
+            border: none;
+            color: #b0b0b0;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(45deg, #00ff88, #00ccff);
+            color: #000;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #b0b0b0;
+            font-size: 14px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: white;
+            font-size: 16px;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #00ff88;
+            box-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
+        }
+
+        .form-group small {
+            color: #888;
+            font-size: 12px;
+            margin-top: 5px;
+            display: block;
+        }
+
+        .payment-instructions {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .paybill-details {
+            margin: 10px 0;
+        }
+
+        .paybill-details div {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+
+        .label {
+            font-weight: 500;
+            color: #b0b0b0;
+        }
+
+        .note {
+            font-size: 12px;
+            color: #888;
+            margin-top: 10px;
+        }
+
+        .modal-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(45deg, #00ff88, #00ccff);
+            border: none;
+            border-radius: 8px;
+            color: #000;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .modal-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        /* Access Code Modal */
+        .success-icon {
+            text-align: center;
+            font-size: 50px;
+            color: #00ff88;
+            margin-bottom: 15px;
+        }
+
+        .success-message {
+            text-align: center;
+            font-size: 18px;
+            color: #00ff88;
+            margin-bottom: 20px;
+        }
+
+        .access-code-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .access-code {
+            font-size: 32px;
+            font-weight: 700;
+            color: #00ff88;
+            letter-spacing: 5px;
+            padding: 10px;
+            background: rgba(0, 255, 136, 0.1);
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(45deg, #00ff88, #00ccff);
+            color: #000;
+            padding: 15px 20px;
+            border-radius: 8px;
+            font-weight: 500;
+            z-index: 1001;
+            display: none;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .notification.show {
+            display: flex;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        .notification.error {
+            background: linear-gradient(45deg, #ff4757, #ff6b81);
+            color: white;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .close-notification {
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        /* Spinner */
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(0, 0, 0, 0.3);
+            border-top: 2px solid #000;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .plan-options {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+                gap: 12px;
+            }
+            
+            .plan-card {
+                padding: 10px;
+                min-height: 130px;
+            }
+            
+            .verify-form {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .plan-options {
+                grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+                gap: 10px;
+            }
+            
+            .plan-card {
+                padding: 8px;
+                min-height: 120px;
+            }
+            
+            .plan-title {
+                font-size: 12px;
+            }
+            
+            .plan-price {
+                font-size: 14px;
+            }
+            
+            .plan-speed {
+                font-size: 10px;
+            }
+            
+            .buy-btn {
+                padding: 6px 8px;
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>G space</h1>
+            <h2>Pay for Wi-Fi Access</h2>
+            <p>Select a plan and pay via M-Pesa</p>
+        </header>
+        
+        <main>
+            <!-- Verification Section - Moved to Top -->
+            <div class="verification-section">
+                <h3 class="section-title">
+                    <i class="fas fa-wifi"></i> Already Have an Access Code?
+                </h3>
+                <p>Enter your access code below to reconnect to the WiFi network.</p>
+                
+                <div class="verify-form">
+                    <input type="text" class="verify-input" id="accessCodeInput" placeholder="Enter 6-digit code" maxlength="6">
+                    <button class="verify-btn" id="verifyCodeBtn">Connect</button>
+                </div>
+                
+                <p class="instructions">
+                    <i class="fas fa-info-circle"></i> Your access code was sent to your WhatsApp after payment.
+                    If you've been disconnected, enter it here to reconnect.
+                </p>
+            </div>
+            
+            <!-- Plan Options -->
+            <div class="plan-options">
+                <div class="plan-card border-blue" data-amount="10" data-duration="1Hour Unlimited">
+                    <div class="plan-title">1Hour Unlimited</div>
+                    <div class="plan-price">KSH:10/-</div>
+                    <div class="plan-speed">MAX 5mbps</div>
+                    <button class="buy-btn" data-plan="1Hour Unlimited">Buy Now</button>
+                </div>
+
+                <div class="plan-card border-green" data-amount="20" data-duration="150mins Unlimited">
+                    <div class="plan-title">150mins Unlimited</div>
+                    <div class="plan-price">KSH:20/-</div>
+                    <div class="plan-speed">MAX 5mbps</div>
+                    <button class="buy-btn" data-plan="150mins Unlimited">Buy Now</button>
+                </div>
+
+                <div class="plan-card border-green" data-amount="25" data-duration="4Hours Unlimited">
+                    <div class="plan-title">4Hours Unlimited</div>
+                    <div class="plan-price">KSH:25/-</div>
+                    <div class="plan-speed">MAX 5mbps</div>
+                    <button class="buy-btn" data-plan="4Hours Unlimited">Buy Now</button>
+                </div>
+
+                <div class="plan-card border-red" data-amount="30" data-duration="2Hours LiveStream">
+                    <div class="plan-title">2Hours LiveStream</div>
+                    <div class="plan-price">KSH:30/-</div>
+                    <div class="plan-speed">MAX 15mbps</div>
+                    <button class="buy-btn" data-plan="2Hours LiveStream">Buy Now</button>
+                </div>
+
+                <div class="plan-card border-red" data-amount="35" data-duration="8Hours Unlimited">
+                    <div class="plan-title">8Hours Unlimited</div>
+                    <div class="plan-price">KSH:35/-</div>
+                    <div class="plan-speed">MAX 5mbps</div>
+                    <button class="buy-btn" data-plan="8Hours Unlimited">Buy Now</button>
+                </div>
+
+                <div class="plan-card border-green" data-amount="40" data-duration="13Hours Unlimited">
+                    <div class="plan-title">13Hours Unlimited</div>
+                    <div class="plan-price">KSH:40/-</div>
+                    <div class="plan-speed">MAX 5mbps</div>
+                    <button class="buy-btn" data-plan="13Hours Unlimited">Buy Now</button>
+                </div>
+
+                <div class="plan-card border-purple" data-amount="45" data-duration="6GBs-24hours">
+                    <div class="plan-title">6GBs-24hours</div>
+                    <div class="plan-price">KSH:45/-</div>
+                    <div class="plan-speed">MAX 5mbps</div>
+                    <button class="buy-btn" data-plan="6GBs-24hours">Buy Now</button>
+                </div>
+
+                <div class="plan-card border-red" data-amount="50" data-duration="24Hours Unlimited">
+                    <div class="plan-title">24Hours Unlimited</div>
+                    <div class="plan-price">KSH:50/-</div>
+                    <div class="plan-speed">MAX 5mbps</div>
+                    <button class="buy-btn" data-plan="24Hours Unlimited">Buy Now</button>
+                </div>
+
+                <div class="plan-card border-red" data-amount="80" data-duration="VIP Daily">
+                    <div class="plan-title">VIP Daily</div>
+                    <div class="plan-price">KSH:80/-</div>
+                    <div class="plan-speed">MAX 10mbps</div>
+                    <button class="buy-btn" data-plan="VIP Daily">Buy Now</button>
+                </div>
+
+                <div class="plan-card border-red" data-amount="95" data-duration="2Days Unlimited">
+                    <div class="plan-title">2Days Unlimited</div>
+                    <div class="plan-price">KSH:95/-</div>
+                    <div class="plan-speed">MAX 5mbps</div>
+                    <button class="buy-btn" data-plan="2Days Unlimited">Buy Now</button>
+                </div>
+
+                <div class="plan-card border-purple" data-amount="140" data-duration="3Days Unlimited">
+                    <div class="plan-title">3Days Unlimited</div>
+                    <div class="plan-price">KSH:140/-</div>
+                    <div class="plan-speed">MAX 5mbps</div>
+                    <button class="buy-btn" data-plan="3Days Unlimited">Buy Now</button>
+                </div>
+
+                <div class="plan-card border-purple" data-amount="200" data-duration="5Days Unlimited">
+                    <div class="plan-title">5Days Unlimited</div>
+                    <div class="plan-price">KSH:200/-</div>
+                    <div class="plan-speed">MAX 5mbps</div>
+                    <button class="buy-btn" data-plan="5Days Unlimited">Buy Now</button>
+                </div>
+
+                <div class="plan-card border-red" data-amount="250" data-duration="40GB Weekly">
+                    <div class="plan-title">40GB Weekly</div>
+                    <div class="plan-price">KSH:250/-</div>
+                    <div class="plan-speed">MAX 5mbps</div>
+                    <button class="buy-btn" data-plan="40GB Weekly">Buy Now</button>
+                </div>
+
+                <div class="plan-card border-green" data-amount="300" data-duration="VIP Weekly">
+                    <div class="plan-title">VIP Weekly</div>
+                    <div class="plan-price">KSH:300/-</div>
+                    <div class="plan-speed">MAX 8mbps</div>
+                    <button class="buy-btn" data-plan="VIP Weekly">Buy Now</button>
+                </div>
+
+                <div class="plan-card border-purple" data-amount="750" data-duration="100GB Monthly">
+                    <div class="plan-title">100GB Monthly</div>
+                    <div class="plan-price">KSH:750/-</div>
+                    <div class="plan-speed">MAX 5mbps</div>
+                    <button class="buy-btn" data-plan="100GB Monthly">Buy Now</button>
+                </div>
+
+                <div class="plan-card border-red" data-amount="1000" data-duration="VIP Monthly">
+                    <div class="plan-title">VIP Monthly</div>
+                    <div class="plan-price">KSH:1000/-</div>
+                    <div class="plan-speed">MAX 8mbps</div>
+                    <button class="buy-btn" data-plan="VIP Monthly">Buy Now</button>
+                </div>
+            </div>
+        </main>
+          
+        <footer>
+            <p>&copy; 2025 G space. All rights reserved.</p>
+            <div class="support-contact">
+                Need help? Call: <a href="tel:+254700000000">+254 700 000 000</a>
+            </div>
+        </footer>
+        
+        <!-- Payment Modal -->
+        <div class="modal-overlay" id="paymentModal">
+            <div class="modal">
+                <button class="close-modal" id="closeModal">&times;</button>
+                <h3 class="modal-title" id="modalTitle">WiFi Access</h3>
+                
+                <!-- Payment Method Tabs -->
+                <div class="payment-tabs">
+                    <button class="tab-btn active" data-tab="stk">Lipa Na M-Pesa</button>
+                    <button class="tab-btn" data-tab="paybill">Paybill</button>
+                </div>
+                
+                <div class="modal-content">
+                    <!-- STK Push Tab -->
+                    <div id="stk-tab" class="tab-content active">
+                        <div class="form-group">
+                            <label for="modalPhone">Enter your M-Pesa phone number</label>
+                            <input type="tel" id="modalPhone" placeholder="07XXXXXXXX" required pattern="[0-9]{10}" maxlength="10">
+                            <small>You will receive an M-Pesa push notification</small>
+                        </div>
+                        <button class="modal-btn" id="confirmStkPayment">
+                            <span id="confirmText">Pay <span id="paymentAmount"></span> KSh</span>
+                            <div class="spinner" id="stkSpinner" style="display: none;"></div>
+                        </button>
+                    </div>
+                    
+                    <!-- Paybill Tab -->
+                    <div id="paybill-tab" class="tab-content">
+                        <div class="form-group">
+                            <label for="paybillPhone">Enter your WhatsApp number</label>
+                            <input type="tel" id="paybillPhone" placeholder="07XXXXXXXX" required pattern="[0-9]{10}" maxlength="10">
+                            <small>We'll send your access code via WhatsApp</small>
+                        </div>
+                        <div class="payment-instructions">
+                            <p><strong>Pay via M-Pesa:</strong></p>
+                            <div class="paybill-details">
+                                <div>
+                                    <span class="label">Paybill:</span>
+                                    <span id="paybillNumber">123456</span>
+                                </div>
+                                <div>
+                                    <span class="label">Account:</span>
+                                    <span id="accountNumber">WIFIACCESS</span>
+                                </div>
+                            </div>
+                            <p class="note">
+                                <i class="fas fa-info-circle"></i> After payment, you'll receive a 6-digit access code via WhatsApp
+                            </p>
+                        </div>
+                        <button class="modal-btn" id="confirmPaybill">
+                            <span>Generate Payment Details</span>
+                            <div class="spinner" id="paybillSpinner" style="display: none;"></div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Access Code Modal -->
+        <div class="modal-overlay" id="codeModal">
+            <div class="modal">
+                <button class="close-modal" id="closeCodeModal">&times;</button>
+                <h3 class="modal-title">Your WiFi Access Code</h3>
+                <div class="modal-content">
+                    <div class="success-icon">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <p class="success-message">Payment Successful!</p>
+                    <div class="access-code-container">
+                        <p>Your unique WiFi access code:</p>
+                        <div class="access-code" id="accessCodeDisplay">583629</div>
+                    </div>
+                    <p class="instructions">
+                        <i class="fas fa-whatsapp"></i> We've sent this code to your WhatsApp number.<br>
+                        Use it to connect to the WiFi network now or anytime you need to reconnect.
+                    </p>
+                    <p class="instructions">
+                        <i class="fas fa-info-circle"></i> This code is valid for your entire session duration.
+                    </p>
+                    <button class="modal-btn" id="connectBtn">
+                        <i class="fas fa-wifi"></i> Connect to WiFi Now
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Notification -->
+        <div class="notification" id="notification">
+            <span id="notification-message">Payment request sent successfully!</span>
+            <span class="close-notification">&times;</span>
+        </div>
+    </div>
+
+    <script src="main.js"></script>
+</body>
+</html>
