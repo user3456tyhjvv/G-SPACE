@@ -1,11 +1,3 @@
-<!--here are the instruction to use:
-1: change the paybill and details
-2: the support number
-3: the website URL
-4: host this using vercel i recommend it
-5: i have sent the file as zipped extract it then run the file in your terminal
-   then run the command * npm install and everything will work *
--->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -313,9 +305,11 @@
             border-radius: 15px;
             padding: 25px;
             width: 90%;
-            max-width: 350px;
+            max-width: 400px;
             border: 1px solid rgba(255, 255, 255, 0.1);
             position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
         }
 
         .close-modal {
@@ -354,6 +348,7 @@
             cursor: pointer;
             font-weight: 500;
             transition: all 0.3s ease;
+            font-size: 12px;
         }
 
         .tab-btn.active {
@@ -380,7 +375,7 @@
             font-size: 14px;
         }
 
-        .form-group input {
+        .form-group input, .form-group textarea {
             width: 100%;
             padding: 12px;
             background: rgba(255, 255, 255, 0.1);
@@ -388,9 +383,15 @@
             border-radius: 8px;
             color: white;
             font-size: 16px;
+            font-family: inherit;
         }
 
-        .form-group input:focus {
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .form-group input:focus, .form-group textarea:focus {
             outline: none;
             border-color: #00ff88;
             box-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
@@ -410,11 +411,11 @@
             margin-bottom: 20px;
         }
 
-        .paybill-details {
+        .till-details {
             margin: 10px 0;
         }
 
-        .paybill-details div {
+        .till-details div {
             display: flex;
             justify-content: space-between;
             margin-bottom: 5px;
@@ -497,6 +498,7 @@
             display: none;
             align-items: center;
             gap: 10px;
+            max-width: 300px;
         }
 
         .notification.show {
@@ -541,6 +543,36 @@
             100% { transform: rotate(360deg); }
         }
 
+        /* Message parsing styles */
+        .message-example {
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: 8px;
+            padding: 12px;
+            font-family: monospace;
+            font-size: 12px;
+            margin-bottom: 15px;
+            color: #00ff88;
+        }
+
+        .copy-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(0, 255, 136, 0.2);
+            border: 1px solid rgba(0, 255, 136, 0.5);
+            border-radius: 4px;
+            color: #00ff88;
+            padding: 4px 8px;
+            font-size: 11px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .copy-button:hover {
+            background: rgba(0, 255, 136, 0.3);
+        }
+
         /* Responsive Design */
         @media (max-width: 768px) {
             .plan-options {
@@ -555,6 +587,11 @@
             
             .verify-form {
                 flex-direction: column;
+            }
+
+            .modal {
+                width: 95%;
+                padding: 20px;
             }
         }
 
@@ -584,6 +621,11 @@
             .buy-btn {
                 padding: 6px 8px;
                 font-size: 12px;
+            }
+
+            .tab-btn {
+                font-size: 10px;
+                padding: 8px 4px;
             }
         }
     </style>
@@ -734,7 +776,7 @@
         <footer>
             <p>&copy; 2025 G space. All rights reserved.</p>
             <div class="support-contact">
-                Need help? Call: <a href="tel:+254700000000">+254 700 000 000</a>
+                Need help? Call: <a href="tel:+254712345678">+254 712 345 678</a> | Visit: <a href="https://gspace.co.ke" target="_blank">gspace.co.ke</a>
             </div>
         </footer>
         
@@ -746,8 +788,9 @@
                 
                 <!-- Payment Method Tabs -->
                 <div class="payment-tabs">
-                    <button class="tab-btn active" data-tab="stk">Lipa Na M-Pesa</button>
-                    <button class="tab-btn" data-tab="paybill">Paybill</button>
+                    <button class="tab-btn active" data-tab="stk">STK Push</button>
+                    <button class="tab-btn" data-tab="till">Till Number</button>
+                    <button class="tab-btn" data-tab="message">M-Pesa Message</button>
                 </div>
                 
                 <div class="modal-content">
@@ -764,32 +807,61 @@
                         </button>
                     </div>
                     
-                    <!-- Paybill Tab -->
-                    <div id="paybill-tab" class="tab-content">
+                    <!-- Till Number Tab -->
+                    <div id="till-tab" class="tab-content">
                         <div class="form-group">
-                            <label for="paybillPhone">Enter your WhatsApp number</label>
-                            <input type="tel" id="paybillPhone" placeholder="07XXXXXXXX" required pattern="[0-9]{10}" maxlength="10">
+                            <label for="tillPhone">Enter your WhatsApp number</label>
+                            <input type="tel" id="tillPhone" placeholder="07XXXXXXXX" required pattern="[0-9]{10}" maxlength="10">
                             <small>We'll send your access code via WhatsApp</small>
                         </div>
                         <div class="payment-instructions">
-                            <p><strong>Pay via M-Pesa:</strong></p>
-                            <div class="paybill-details">
+                            <p><strong>Pay via M-Pesa Till Number:</strong></p>
+                            <div class="till-details">
                                 <div>
-                                    <span class="label">Paybill:</span>
-                                    <span id="paybillNumber">123456</span>
+                                    <span class="label">Till Number:</span>
+                                    <span id="tillNumber">5678901</span>
+                                    <button class="copy-button" onclick="copyToClipboard('5678901')">Copy</button>
                                 </div>
                                 <div>
-                                    <span class="label">Account:</span>
-                                    <span id="accountNumber">WIFIACCESS</span>
+                                    <span class="label">Amount:</span>
+                                    <span id="tillAmount">KSh 0</span>
                                 </div>
                             </div>
                             <p class="note">
                                 <i class="fas fa-info-circle"></i> After payment, you'll receive a 6-digit access code via WhatsApp
                             </p>
                         </div>
-                        <button class="modal-btn" id="confirmPaybill">
+                        <button class="modal-btn" id="confirmTill">
                             <span>Generate Payment Details</span>
-                            <div class="spinner" id="paybillSpinner" style="display: none;"></div>
+                            <div class="spinner" id="tillSpinner" style="display: none;"></div>
+                        </button>
+                    </div>
+                    
+                    <!-- M-Pesa Message Tab -->
+                    <div id="message-tab" class="tab-content">
+                        <div class="form-group">
+                            <label for="messagePhone">Enter your WhatsApp number</label>
+                            <input type="tel" id="messagePhone" placeholder="07XXXXXXXX" required pattern="[0-9]{10}" maxlength="10">
+                            <small>We'll send your access code via WhatsApp</small>
+                        </div>
+                        
+                        <div class="payment-instructions">
+                            <p><strong>Step 1:</strong> Pay via any M-Pesa method</p>
+                            <div class="message-example">
+                                <strong>Example M-Pesa Message:</strong><br>
+                                RL74HJ8K9L Confirmed. Ksh50.00 sent to WIFI ACCESS 5678901 on 15/9/25 at 2:30 PM. New M-PESA balance is Ksh1,234.56. Transaction cost, Ksh0.00.
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="mpesaMessage">Paste your M-Pesa confirmation message</label>
+                            <textarea id="mpesaMessage" placeholder="Paste the entire M-Pesa confirmation SMS here..." rows="4"></textarea>
+                            <small>Copy and paste the complete M-Pesa confirmation message you received</small>
+                        </div>
+                        
+                        <button class="modal-btn" id="confirmMessage">
+                            <span>Verify Payment & Get Access Code</span>
+                            <div class="spinner" id="messageSpinner" style="display: none;"></div>
                         </button>
                     </div>
                 </div>
@@ -831,6 +903,440 @@
         </div>
     </div>
 
-    <script src="main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // DOM Elements
+            const buyButtonsContainer = document.querySelector('.plan-options');
+            const paymentModal = document.getElementById('paymentModal');
+            const codeModal = document.getElementById('codeModal');
+            const closeModal = document.getElementById('closeModal');
+            const closeCodeModal = document.getElementById('closeCodeModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const paymentAmount = document.getElementById('paymentAmount');
+            const tillAmount = document.getElementById('tillAmount');
+            const confirmStkPayment = document.getElementById('confirmStkPayment');
+            const confirmTill = document.getElementById('confirmTill');
+            const confirmMessage = document.getElementById('confirmMessage');
+            const stkSpinner = document.getElementById('stkSpinner');
+            const tillSpinner = document.getElementById('tillSpinner');
+            const messageSpinner = document.getElementById('messageSpinner');
+            const notification = document.getElementById('notification');
+            const notificationMessage = document.getElementById('notification-message');
+            const closeNotification = document.querySelector('.close-notification');
+            const accessCodeDisplay = document.getElementById('accessCodeDisplay');
+            const connectBtn = document.getElementById('connectBtn');
+            const tillNumber = document.getElementById('tillNumber');
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+            const verifyCodeBtn = document.getElementById('verifyCodeBtn');
+            const accessCodeInput = document.getElementById('accessCodeInput');
+            
+            // Configuration - Update these values
+            const API_BASE_URL = 'https://your-api-url.herokuapp.com'; // Change this to your backend URL
+            
+            // Current selected plan
+            let currentPlan = null;
+            let clientIp = null;
+            let clientMac = null;
+            let clientGateway = null;
+            
+            // Set client info from URL parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            clientIp = urlParams.get('ip') || '';
+            clientMac = urlParams.get('mac') || '';
+            clientGateway = urlParams.get('gateway') || '';
+            
+            // Add event listeners to buy buttons
+            document.querySelectorAll('.buy-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const planCard = this.closest('.plan-card');
+                    currentPlan = {
+                        amount: planCard.getAttribute('data-amount'),
+                        duration: planCard.getAttribute('data-duration'),
+                        plan: this.getAttribute('data-plan')
+                    };
+                    
+                    // Update modal content
+                    modalTitle.textContent = currentPlan.plan;
+                    paymentAmount.textContent = currentPlan.amount;
+                    tillAmount.textContent = `KSh ${currentPlan.amount}`;
+                    
+                    // Show modal
+                    paymentModal.classList.add('active');
+                });
+            });
+            
+            // Close modal handlers
+            closeModal.addEventListener('click', function() {
+                paymentModal.classList.remove('active');
+            });
+            
+            closeCodeModal.addEventListener('click', function() {
+                codeModal.classList.remove('active');
+            });
+            
+            // Tab switching
+            tabButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    
+                    // Update active tab button
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Show corresponding content
+                    tabContents.forEach(content => content.classList.remove('active'));
+                    document.getElementById(`${tabId}-tab`).classList.add('active');
+                });
+            });
+            
+            // Phone number validation
+            const validatePhone = (phone) => {
+                return phone.match(/^07[0-9]{8}$/);
+            };
+            
+            // Show notification
+            function showNotification(message, type = 'success') {
+                notification.className = 'notification';
+                notification.classList.add(type, 'show');
+                notificationMessage.textContent = message;
+                
+                // Auto-hide after 5 seconds
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                }, 5000);
+            }
+            
+            // Close notification
+            closeNotification.addEventListener('click', function() {
+                notification.classList.remove('show');
+            });
+            
+            // Generate random 6-digit access code
+            function generateAccessCode() {
+                return Math.floor(100000 + Math.random() * 900000).toString();
+            }
+            
+            // Copy to clipboard function
+            window.copyToClipboard = function(text) {
+                navigator.clipboard.writeText(text).then(() => {
+                    showNotification('Copied to clipboard!', 'success');
+                }).catch(() => {
+                    showNotification('Failed to copy', 'error');
+                });
+            };
+            
+            // STK Payment handler
+            confirmStkPayment.addEventListener('click', async function() {
+                const phone = document.getElementById('modalPhone').value;
+                
+                // Validate phone number
+                if (!validatePhone(phone)) {
+                    showNotification('Please enter a valid 10-digit Safaricom number starting with 07', 'error');
+                    return;
+                }
+                
+                // Show loading state
+                confirmStkPayment.disabled = true;
+                stkSpinner.style.display = 'inline-block';
+                
+                try {
+                    const response = await fetch(`${API_BASE_URL}/api/stkpush`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            phone: phone,
+                            amount: currentPlan.amount,
+                            plan: currentPlan.plan,
+                            duration: currentPlan.duration,
+                            ip: clientIp,
+                            mac: clientMac,
+                            gateway: clientGateway
+                        })
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (data.success) {
+                        showNotification(`STK push sent to ${phone}. Please complete payment on your phone.`);
+                        
+                        // Show access code in modal
+                        accessCodeDisplay.textContent = data.access_code;
+                        accessCodeInput.value = data.access_code;
+                        
+                        // Switch to code modal after a delay
+                        setTimeout(() => {
+                            paymentModal.classList.remove('active');
+                            codeModal.classList.add('active');
+                        }, 3000);
+                    } else {
+                        showNotification(data.message || 'Payment failed. Please try again.', 'error');
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    showNotification('Failed to send payment request. Please try again.', 'error');
+                } finally {
+                    // Reset button state
+                    confirmStkPayment.disabled = false;
+                    stkSpinner.style.display = 'none';
+                }
+            });
+            
+            // Till Number handler
+            confirmTill.addEventListener('click', async function() {
+                const phone = document.getElementById('tillPhone').value;
+                
+                // Validate phone number
+                if (!validatePhone(phone)) {
+                    showNotification('Please enter a valid 10-digit number starting with 07', 'error');
+                    return;
+                }
+                
+                // Show loading state
+                confirmTill.disabled = true;
+                tillSpinner.style.display = 'inline-block';
+                
+                try {
+                    const response = await fetch(`${API_BASE_URL}/api/till-payment`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            phone: phone,
+                            amount: currentPlan.amount,
+                            plan: currentPlan.plan,
+                            duration: currentPlan.duration,
+                            ip: clientIp,
+                            mac: clientMac,
+                            gateway: clientGateway
+                        })
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (data.success) {
+                        // Generate access code
+                        const accessCode = generateAccessCode();
+                        
+                        // Show access code
+                        accessCodeDisplay.textContent = accessCode;
+                        accessCodeInput.value = accessCode;
+                        
+                        showNotification('Payment details generated. Please complete payment and you will receive your access code.');
+                        
+                        // Switch to code modal
+                        setTimeout(() => {
+                            paymentModal.classList.remove('active');
+                            codeModal.classList.add('active');
+                        }, 2000);
+                    } else {
+                        showNotification(data.message || 'Failed to generate payment details.', 'error');
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    showNotification('Failed to generate till payment. Please try again.', 'error');
+                } finally {
+                    // Reset button state
+                    confirmTill.disabled = false;
+                    tillSpinner.style.display = 'none';
+                }
+            });
+            
+            // M-Pesa Message handler
+            confirmMessage.addEventListener('click', async function() {
+                const phone = document.getElementById('messagePhone').value;
+                const mpesaMessage = document.getElementById('mpesaMessage').value;
+                
+                // Validate inputs
+                if (!validatePhone(phone)) {
+                    showNotification('Please enter a valid 10-digit number starting with 07', 'error');
+                    return;
+                }
+                
+                if (!mpesaMessage.trim()) {
+                    showNotification('Please paste your M-Pesa confirmation message', 'error');
+                    return;
+                }
+                
+                // Show loading state
+                confirmMessage.disabled = true;
+                messageSpinner.style.display = 'inline-block';
+                
+                try {
+                    const response = await fetch(`${API_BASE_URL}/api/verify-mpesa-message`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            phone: phone,
+                            message: mpesaMessage,
+                            amount: currentPlan.amount,
+                            plan: currentPlan.plan,
+                            duration: currentPlan.duration,
+                            ip: clientIp,
+                            mac: clientMac,
+                            gateway: clientGateway
+                        })
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (data.success) {
+                        // Show access code
+                        accessCodeDisplay.textContent = data.access_code;
+                        accessCodeInput.value = data.access_code;
+                        
+                        showNotification('Payment verified successfully!');
+                        
+                        // Switch to code modal
+                        setTimeout(() => {
+                            paymentModal.classList.remove('active');
+                            codeModal.classList.add('active');
+                        }, 1500);
+                    } else {
+                        showNotification(data.message || 'Payment verification failed. Please check your message.', 'error');
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    showNotification('Failed to verify payment. Please try again.', 'error');
+                } finally {
+                    // Reset button state
+                    confirmMessage.disabled = false;
+                    messageSpinner.style.display = 'none';
+                }
+            });
+            
+            // Connect to WiFi handler
+            connectBtn.addEventListener('click', async function() {
+                const accessCode = accessCodeDisplay.textContent;
+                
+                // Show loading state
+                connectBtn.disabled = true;
+                connectBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Connecting...';
+                
+                try {
+                    const response = await fetch(`${API_BASE_URL}/api/verify-code`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            code: accessCode,
+                            ip: clientIp,
+                            mac: clientMac
+                        })
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (data.success) {
+                        showNotification('WiFi access granted! You can now browse freely.', 'success');
+                        
+                        // Close modal after delay
+                        setTimeout(() => {
+                            codeModal.classList.remove('active');
+                            connectBtn.disabled = false;
+                            connectBtn.innerHTML = '<i class="fas fa-wifi"></i> Connect to WiFi Now';
+                        }, 1500);
+                    } else {
+                        showNotification(data.error || 'Connection failed.', 'error');
+                        connectBtn.disabled = false;
+                        connectBtn.innerHTML = '<i class="fas fa-wifi"></i> Connect to WiFi Now';
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    showNotification('Connection failed. Please check your network.', 'error');
+                    connectBtn.disabled = false;
+                    connectBtn.innerHTML = '<i class="fas fa-wifi"></i> Connect to WiFi Now';
+                }
+            });
+            
+            // Verify access code handler
+            verifyCodeBtn.addEventListener('click', async function() {
+                const code = accessCodeInput.value.trim();
+                
+                if (!code || code.length !== 6) {
+                    showNotification('Please enter a valid 6-digit access code', 'error');
+                    return;
+                }
+                
+                // Show loading state
+                verifyCodeBtn.disabled = true;
+                verifyCodeBtn.innerHTML = 'Verifying... <div class="spinner"></div>';
+                
+                try {
+                    const response = await fetch(`${API_BASE_URL}/api/verify-code`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            code: code,
+                            ip: clientIp,
+                            mac: clientMac
+                        })
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (data.success) {
+                        showNotification('Access code verified! Reconnecting to WiFi...', 'success');
+                        
+                        // Reset button
+                        verifyCodeBtn.disabled = false;
+                        verifyCodeBtn.innerHTML = 'Connect';
+                        
+                        // Clear input
+                        accessCodeInput.value = '';
+                        
+                        // Simulate reconnection
+                        setTimeout(() => {
+                            showNotification('Successfully reconnected to WiFi!', 'success');
+                        }, 1000);
+                    } else {
+                        showNotification(data.error || 'Invalid access code.', 'error');
+                        verifyCodeBtn.disabled = false;
+                        verifyCodeBtn.innerHTML = 'Connect';
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    showNotification('Verification failed. Please try again.', 'error');
+                    verifyCodeBtn.disabled = false;
+                    verifyCodeBtn.innerHTML = 'Connect';
+                }
+            });
+            
+            // Close modal when clicking outside
+            paymentModal.addEventListener('click', function(e) {
+                if (e.target === paymentModal) {
+                    paymentModal.classList.remove('active');
+                }
+            });
+            
+            codeModal.addEventListener('click', function(e) {
+                if (e.target === codeModal) {
+                    codeModal.classList.remove('active');
+                }
+            });
+            
+            // Auto-advance input for access code
+            accessCodeInput.addEventListener('input', function() {
+                if (this.value.length === 6) {
+                    verifyCodeBtn.focus();
+                }
+            });
+            
+            // Enter key for verification
+            accessCodeInput.addEventListener('keyup', function(e) {
+                if (e.key === 'Enter') {
+                    verifyCodeBtn.click();
+                }
+            });
+        });
+    </script>
 </body>
 </html>
