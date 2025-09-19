@@ -783,12 +783,12 @@
         <!-- Payment Modal -->
         <div class="modal-overlay" id="paymentModal">
             <div class="modal">
-                <button class="close-modal" id="closeModal">&times;</button>
+                <button class="close-modal" id="closeModal"> close</button>
                 <h3 class="modal-title" id="modalTitle">WiFi Access</h3>
                 
                 <!-- Payment Method Tabs -->
                 <div class="payment-tabs">
-                    <button class="tab-btn active" data-tab="stk">STK Push</button>
+                    <!-- <button class="tab-btn active" data-tab="stk">STK Push</button> -->
                     <button class="tab-btn" data-tab="till">Till Number</button>
                     <button class="tab-btn" data-tab="message">M-Pesa Message</button>
                 </div>
@@ -818,9 +818,10 @@
                             <p><strong>Pay via M-Pesa Till Number:</strong></p>
                             <div class="till-details">
                                 <div>
+                                    <button class="copy-button" onclick="copyToClipboard('5678901')">Copy</button>
                                     <span class="label">Till Number:</span>
                                     <span id="tillNumber">6285890</span>
-                                    <button class="copy-button" onclick="copyToClipboard('5678901')">Copy</button>
+                                    
                                 </div>
                                 <div>
                                     <span class="label">Amount:</span>
